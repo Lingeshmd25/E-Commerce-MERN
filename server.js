@@ -14,9 +14,9 @@ app.use(express.json());
 
 // --- CORS setup ---
 app.use(cors({
-  origin: "*",
-  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
-  allowedHeaders: ["Content-Type","Authorization"]
+  origin: "*", // for testing, allow all
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 // --- MongoDB connection ---
@@ -27,6 +27,19 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("MongoDB connected"))
 .catch(err => console.log("MongoDB connection error:", err));
 
+// --- Swagger servers setup ---
+const servers = [
+  { url: `http://localhost:${process.env.LOCAL_PORT || 5000}`, description: "Local Development Server" }
+];
+
+// Render deployment URL (if available)
+if (process.env.RENDER_EXTERNAL_HOSTNAME) {
+  servers.push({
+    url: `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`,
+    description: "Render Production Server"
+  });
+}
+
 // --- Swagger setup ---
 const swaggerOptions = {
   definition: {
@@ -34,15 +47,9 @@ const swaggerOptions = {
     info: {
       title: "E-Commerce API",
       version: "1.0.0",
-      description: "API documentation for e-commerce project",
+      description: "API docs"
     },
-    servers: [
-      { url: "http://localhost:5000", description: "Local Dev" },
-      { url: "http://13.228.225.19:5000", description: "Deployed Server 1" },
-      { url: "http://18.142.128.26:5000", description: "Deployed Server 2" },
-      { url: "http://54.254.162.138:5000", description: "Deployed Server 3" },
-      { url: "https://e-commerce-bgbt.onrender.com", description: "Render Deployment" },
-    ],
+    servers: servers
   },
   apis: ["./routes/*.js"],
 };
@@ -55,5 +62,5 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
 // --- Start server ---
-const PORT = process.env.LOCAL_PORT || process.env.REMOTE_PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || process.env.LOCAL_PORT || 5000; // Render sets process.env.PORT
+app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));

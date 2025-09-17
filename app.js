@@ -12,9 +12,11 @@ app.use(cors({
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
-// Optional: print spec to verify
+// print spec to verify
 console.log(JSON.stringify(swaggerSpec.servers, null, 2));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+const PORT = process.env.LOCAL_PORT || process.env.REMOTE_PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+

@@ -2,7 +2,7 @@ import express from "express";
 import {
   createProduct,
   getProducts,
-  getProduct,
+  getAllProducts,
   getProductByName,
   updateProductByName,
   deleteProductByName,
@@ -81,32 +81,26 @@ const handleValidationErrors = (req, res, next) => {
 /**
  * @swagger
  * /api/products:
- *   post:
- *     summary: Create a new product (Admin only)
+ *   get:
+ *     summary: Get all products (Admin & customer)
  *     tags: [Products]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/ProductInput'
  *     responses:
- *       201:
- *         description: Product created successfully
- *       400:
- *         description: Validation error
+ *       200:
+ *         description: List of all products
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ValidationError'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ProductInput'
  */
-router.post("/",productValidation, handleValidationErrors, createProduct);
+router.get("/", getAllProducts);
 
 /**
  * @swagger
- * /api/products:
+ * /api/products/search:
  *   get:
- *     summary: Get list of all products (Customer & Admin)
+ *     summary: Get products with filters (Customer & Admin)
  *     tags: [Products]
  *     parameters:
  *       - in: query
@@ -138,9 +132,9 @@ router.post("/",productValidation, handleValidationErrors, createProduct);
  *         description: Number of products per page
  *     responses:
  *       200:
- *         description: List of products
+ *         description: List of filtered products
  */
-router.get("/", getProducts);
+router.get("/search", getProducts);
 
 /**
  * @swagger
@@ -162,6 +156,26 @@ router.get("/", getProducts);
  *         description: Product not found
  */
 router.get("/:name", getProductByName);
+
+/**
+ * @swagger
+ * /api/products:
+ *   post:
+ *     summary: Create a new product (Admin only)
+ *     tags: [Products]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProductInput'
+ *     responses:
+ *       201:
+ *         description: Product created successfully
+ *       400:
+ *         description: Validation error
+ */
+router.post("/", productValidation, handleValidationErrors, createProduct);
 
 /**
  * @swagger
@@ -190,7 +204,7 @@ router.get("/:name", getProductByName);
  *       404:
  *         description: Product not found
  */
-router.put("/:name",productValidation, handleValidationErrors, updateProductByName);
+router.put("/:name", productValidation, handleValidationErrors, updateProductByName);
 
 /**
  * @swagger
@@ -212,72 +226,5 @@ router.put("/:name",productValidation, handleValidationErrors, updateProductByNa
  *         description: Product not found
  */
 router.delete("/:name", deleteProductByName);
-
-
-/**
- * @swagger
- * /api/products:
- *   get:
- *     summary: Get products filtered by name, category, or tags (Customer & Admin)
- *     tags: [Products]
- *     parameters:
- *       - in: query
- *         name: name
- *         schema:
- *           type: string
- *         description: Search product by name (partial, case-insensitive)
- *       - in: query
- *         name: category
- *         schema:
- *           type: string
- *         description: Filter products by category
- *       - in: query
- *         name: tags
- *         schema:
- *           type: string
- *         description: Filter by tag(s), comma separated (e.g., "shirt,blue")
- *     responses:
- *       200:
- *         description: List of filtered products
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                   name:
- *                     type: string
- *                   description:
- *                     type: string
- *                   price:
- *                     type: number
- *                   stock:
- *                     type: integer
- *                   category:
- *                     type: string
- *                   tags:
- *                     type: array
- *                     items:
- *                       type: string
- *                   imageUrl:
- *                     type: string
- *                   createdAt:
- *                     type: string
- *                   updatedAt:
- *                     type: string
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Internal server error"
- */
 
 export default router;
