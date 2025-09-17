@@ -14,7 +14,7 @@ app.use(express.json());
 
 // --- CORS setup ---
 app.use(cors({
-  origin: "*", // for testing, allow all
+  origin: "*", // For testing; in production, restrict domains
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -22,7 +22,7 @@ app.use(cors({
 // --- MongoDB connection ---
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology: true
 })
 .then(() => console.log("MongoDB connected"))
 .catch(err => console.log("MongoDB connection error:", err));
@@ -32,7 +32,7 @@ const servers = [
   { url: `http://localhost:${process.env.LOCAL_PORT || 5000}`, description: "Local Development Server" }
 ];
 
-// Render deployment URL (if available)
+// Add Render deployment server if available
 if (process.env.RENDER_EXTERNAL_HOSTNAME) {
   servers.push({
     url: `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`,
@@ -47,11 +47,11 @@ const swaggerOptions = {
     info: {
       title: "E-Commerce API",
       version: "1.0.0",
-      description: "API docs"
+      description: "API documentation for E-Commerce project"
     },
     servers: servers
   },
-  apis: ["./routes/*.js"],
+  apis: ["./routes/*.js"], // Path to your route files with Swagger comments
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
@@ -62,5 +62,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
 // --- Start server ---
-const PORT = process.env.PORT || process.env.LOCAL_PORT || 5000; // Render sets process.env.PORT
-app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || process.env.LOCAL_PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
+  if (process.env.RENDER_EXTERNAL_HOSTNAME) {
+    console.log(`Render URL: https://${process.env.RENDER_EXTERNAL_HOSTNAME}`);
+  }
+});
