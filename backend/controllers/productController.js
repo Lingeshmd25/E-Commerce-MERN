@@ -1,15 +1,7 @@
 import Product from "../models/Product.js";
+import upload from "../middleware/upload.js";
 
-//  Create Product (Admin only)
-export const createProduct = async (req, res) => {
-  try {
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json({ message: "Product created", product });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
+
 
 //  Get Single Product by Name
 export const getProductByName = async (req, res) => {
@@ -22,21 +14,38 @@ export const getProductByName = async (req, res) => {
   }
 };
 
-//  Update Product by Name (Admin only)
-export const updateProductByName = async (req, res) => {
+export const createProduct = async (req, res) => {
   try {
-    const productName = req.params.name.trim();
-    const product = await Product.findOneAndUpdate(
-      { name: { $regex: `^${productName}$`, $options: "i" } }, // case-insensitive match
-      req.body,
-      { new: true, runValidators: true }
+    const { name, description, price, stock, category, tags, imageUrl } = req.body;
+
+    const product = new Product({
+      name,
+      description,
+      price,
+      stock,
+      category,
+      tags,
+      imageUrl, 
+    });
+
+    await product.save();
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+export const updateProduct = async (req, res) => {
+  try {
+    const { name, description, price, stock, category, tags, imageUrl } = req.body;
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      { name, description, price, stock, category, tags, imageUrl },
+      { new: true }
     );
-
-    if (!product) return res.status(404).json({ message: "Product not found" });
-
-    res.status(200).json({ message: "Product updated", product });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(200).json(product);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -73,18 +82,30 @@ export const getAllProducts = async (req, res) => {
 //  Get All Products (Customer & Admin) with search, filter, pagination
 export const getProducts = async (req, res) => {
   try {
-    const { name, category, tags, page = 1, limit = 10 } = req.query;
+    const { q } = req.query; // single query parameter
     const filter = {};
 
-    if (name) filter.name = { $regex: name, $options: "i" };
-    if (category) filter.category = category;
-    if (tags) filter.tags = { $in: tags.split(",") };
+    if (q) {
+      const regex = new RegExp(q.trim(), "i"); // case-insensitive
+      filter.$or = [
+        { name: regex },       // match name
+        { tags: { $in: [regex] } } // match tags array
+      ];
+    }
 
-    const products = await Product.find(filter)
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
-
+    const products = await Product.find(filter);
     res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// productController.js
+export const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -6,9 +6,6 @@ export const registerValidation = [
     .notEmpty().withMessage("First name is required")
     .matches(/^[A-Za-z]{2,}$/).withMessage("First name must contain only letters and be at least 2 characters"),
 
-  body("last_name")
-    .notEmpty().withMessage("Last name is required")
-    .matches(/^[A-Za-z]{1,}$/).withMessage("Last name must contain only letters"),
 
   body("email")
     .notEmpty().withMessage("Email is required")
@@ -38,34 +35,32 @@ export const loginValidation = [
 // product validation 
 export const productValidation = [
   body("name")
+    .trim()
     .notEmpty().withMessage("Product name is required")
-    .matches(/^[A-Za-z0-9\s]{3,50}$/).withMessage("Product name must be 3-50 characters, letters/numbers only"),
+    .matches(/^[A-Za-z0-9\s,]{2,20}$/).withMessage("Product name must be 2-20 chars (letters, numbers, space, comma)"),
 
   body("description")
+    .trim()
     .notEmpty().withMessage("Description is required")
-    .matches(/^.{10,500}$/).withMessage("Description must be 10-500 characters"),
+    .matches(/^[A-Za-z0-9\s.,!@#&()\-]{5,200}$/).withMessage("Description must be 5-200 valid characters"),
 
   body("price")
     .notEmpty().withMessage("Price is required")
-    .isFloat({ gt: 0 }).withMessage("Price must be a valid number greater than 0"),
-
+    .matches(/^\d+(\.\d{1,2})?$/).withMessage("Price must be a positive number with up to 2 decimals"),
 
   body("stock")
     .notEmpty().withMessage("Stock is required")
-    .matches(/^\d+$/).withMessage("Stock must be a valid integer"),
+    .matches(/^\d+$/).withMessage("Stock must be a non-negative integer"),
 
   body("category")
+    .trim()
     .notEmpty().withMessage("Category is required")
-    .matches(/^[A-Za-z\s]{3,30}$/).withMessage("Category must be 3-30 characters, letters only"),
+    .matches(/^([A-Za-z\s]{2,30})(,\s*[A-Za-z\s]{2,30})*$/)
+    .withMessage("Category must be comma-separated words (2-30 letters each)"),
 
-  body("tags")
-    .optional()
-    .isArray().withMessage("Tags must be an array")
-    .custom((tags) => tags.every(tag => /^[A-Za-z0-9\s]{2,20}$/.test(tag)))
-    .withMessage("Each tag must be 2-20 characters, letters/numbers only"),
-
-  body("imageUrl")
-    .optional()
-    .matches(/^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i)
-    .withMessage("Image URL must be a valid link to an image"),
+  body("image")
+    .trim()
+    .notEmpty().withMessage("Image URL is required")
+    .matches(/^(https?:\/\/[^\s]+)$/i).withMessage("Plase enter the valid url"),
 ];
+

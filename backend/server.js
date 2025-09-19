@@ -14,7 +14,7 @@ app.use(express.json());
 
 // --- CORS setup ---
 app.use(cors({
-  origin: "*", // For testing; in production, restrict domains
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -32,7 +32,6 @@ const servers = [
   { url: `http://localhost:${process.env.LOCAL_PORT || 5000}`, description: "Local Development Server" }
 ];
 
-// Add Render deployment server if available
 if (process.env.RENDER_EXTERNAL_HOSTNAME) {
   servers.push({
     url: `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`,
@@ -51,7 +50,7 @@ const swaggerOptions = {
     },
     servers: servers
   },
-  apis: ["./routes/*.js"], // Path to your route files with Swagger comments
+  apis: ["./routes/*.js"],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);

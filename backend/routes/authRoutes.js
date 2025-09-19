@@ -61,7 +61,6 @@ const handleValidationErrors = (req, res, next) => {
  *             type: object
  *             required:
  *               - first_name
- *               - last_name
  *               - email
  *               - password
  *               - phone_number
@@ -69,9 +68,6 @@ const handleValidationErrors = (req, res, next) => {
  *               first_name:
  *                 type: string
  *                 example: Lingesh
- *               last_name:
- *                 type: string
- *                 example: MD
  *               email:
  *                 type: string
  *                 example: lingesh@example.com
