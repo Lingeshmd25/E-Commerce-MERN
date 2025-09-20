@@ -7,10 +7,18 @@
   "scripts": {
     "backend": "nodemon backend/server.js",
     "frontend": "npm run dev --prefix frontend",
-    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "start": "node backend/server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "mern",
+    "ecommerce",
+    "nodejs",
+    "express",
+    "mongodb",
+    "react"
+  ],
+  "author": "Lingesh",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
