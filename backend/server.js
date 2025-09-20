@@ -6,6 +6,8 @@ import swaggerJsdoc from "swagger-jsdoc";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -56,9 +58,18 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// --- Routes ---
+// --- API Routes ---
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+
+// --- Serve React frontend ---
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
 
 // --- Start server ---
 const PORT = process.env.PORT || process.env.LOCAL_PORT || 5000;
