@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://e-commerce-mern-ccrh.onrender.com",
+  baseURL: "https://e-commerce-mern-ccrh.onrender.com/api",
   headers: { "Content-Type": "application/json" }
 });
 
-// JWT token interceptor
+// Token attach panna
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
