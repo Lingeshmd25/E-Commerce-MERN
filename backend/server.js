@@ -15,9 +15,13 @@ const app = express();
 app.use(express.json());
 
 // --- CORS setup ---
+// Use FRONTEND_URL from env, fallback to localhost
+const frontendURL = process.env.FRONTEND_URL || (process.env.RENDER_EXTERNAL_HOSTNAME ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}` : "http://localhost:3000");
+
 app.use(cors({
-  origin: "*",
+  origin: frontendURL,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
@@ -75,6 +79,7 @@ app.get("*", (req, res) => {
 const PORT = process.env.PORT || process.env.LOCAL_PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Frontend allowed URL: ${frontendURL}`);
   if (process.env.RENDER_EXTERNAL_HOSTNAME) {
     console.log(`Render URL: https://${process.env.RENDER_EXTERNAL_HOSTNAME}`);
   }
