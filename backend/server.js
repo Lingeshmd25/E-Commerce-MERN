@@ -16,8 +16,7 @@ app.use(express.json());
 
 // --- CORS setup ---
 // Use FRONTEND_URL from env, fallback to localhost
-const frontendURL = process.env.FRONTEND_URL || (process.env.RENDER_EXTERNAL_HOSTNAME ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}` : "http://localhost:3000");
-
+const frontendURL = "https://ecommers02.netlify.app"
 app.use(cors({
   origin: frontendURL,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
