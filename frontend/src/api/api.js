@@ -1,10 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL:
-    window.location.hostname === "localhost"
-      ? "http://localhost:5000/api"
-      : "https://e-commerce-mern-ccrh.onrender.com",
+  baseURL: process.env.REACT_APP_API_URL,
   headers: { "Content-Type": "application/json" }
 });
 
