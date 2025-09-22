@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://e-commerce-mern-ccrh.onrender.com/",
+  baseURL: "https://e-commerce-mern-ccrh.onrender.com",
   headers: { "Content-Type": "application/json" }
 });
 
