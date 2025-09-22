@@ -16,7 +16,7 @@ app.use(express.json());
 
 // --- CORS setup ---
 // Use FRONTEND_URL from env, fallback to localhost
-const frontendURL = "https://ecommers02.netlify.app"
+const frontendURL = "https://e-commercefrontend-5whe.onrender.com"
 app.use(cors({
   origin: frontendURL,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
