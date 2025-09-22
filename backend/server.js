@@ -66,15 +66,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
-// --- Serve React frontend ---
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-});
-
 // --- Start server ---
 const PORT = process.env.PORT || process.env.LOCAL_PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
