@@ -9,7 +9,8 @@ import Register from "../pages/Register";
 export const publicRoutes = [
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
-  { path: "/products", element: <Products /> },   // now public
+  { path: "/products", element: <Products /> },        // Public products list
+  { path: "/product/:id", element: <ProductDetails /> }, // Public product details
 ];
 
 // Admin routes
