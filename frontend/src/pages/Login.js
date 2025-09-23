@@ -44,46 +44,47 @@ const Login = () => {
   };
 
   return (
-    <div className="container-fluid mt-5" style={{ maxWidth: "400px" }}>
-      <form className="container-fluid border shadow-lg" onSubmit={handleLogin}>
-        <div className="my-3 text-center">
-          <h2>Login</h2>
-        </div>
-        <div className="mb-3 px-3">
-          <label className="form-label">Email</label>
-          <input
-            type="email"
-            className="form-control"
-            value={email}
-            placeholder="Enter your email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3 px-3">
-          <label className="form-label">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            placeholder="Enter your password"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-check mb-3 ms-3">
-          <input type="checkbox" className="form-check-input" id="rememberMe" required />
-          <label className="form-check-label" htmlFor="rememberMe">
-            Remember me
-          </label>
-        </div>
-        <div className="px-3">
-          <button type="submit" className="btn btn-primary mb-4 w-100">
-            Login
-          </button>
-        </div>
-      </form>
+    <div
+  className="d-flex justify-content-center align-items-center"
+  style={{ minHeight: "100vh" }}
+>
+  <form className="border shadow-lg p-4" style={{ maxWidth: "400px", width: "100%" }} onSubmit={handleLogin}>
+    <div className="text-center mb-3">
+      <h2>Login</h2>
     </div>
+    <div className="mb-3">
+      <label className="form-label">Email</label>
+      <input
+        type="email"
+        className="form-control"
+        value={email}
+        placeholder="Enter your email"
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+    </div>
+    <div className="mb-3">
+      <label className="form-label">Password</label>
+      <input
+        type="password"
+        className="form-control"
+        value={password}
+        placeholder="Enter your password"
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+    </div>
+    <div className="form-check mb-3">
+      <input type="checkbox" className="form-check-input" id="rememberMe" required />
+      <label className="form-check-label" htmlFor="rememberMe">
+        Remember me
+      </label>
+    </div>
+    <button type="submit" className="btn btn-primary w-100">
+      Login
+    </button>
+  </form>
+</div>
   );
 };
 
