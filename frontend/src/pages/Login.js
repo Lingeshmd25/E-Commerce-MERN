@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/api";
 import { AuthContext } from "../context/AuthContext";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 const Login = () => {
   const navigate = useNavigate();
