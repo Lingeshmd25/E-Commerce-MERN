@@ -2,14 +2,13 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/api";
 import { AuthContext } from "../context/AuthContext";
-import { BsEye, BsEyeSlash } from "react-icons/bs"; // ✅ react-icons
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // toggle password
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,7 +17,6 @@ const Login = () => {
       const user = res.data.user;
       const token = res.data.token;
 
-      // Store locally
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
@@ -70,7 +68,7 @@ const Login = () => {
 
         <div className="mb-3">
           <label className="form-label">Password</label>
-          <div style={{ position: "relative" }}>
+          <div className="position-relative">
             <input
               type={showPassword ? "text" : "password"}
               className="form-control"
@@ -79,9 +77,9 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {/* 🔹 React-icons eye toggle */}
-            <span
-              onClick={() => setShowPassword(!showPassword)}
+            {/* 🔹 Bootstrap Icons eye toggle */}
+            <i
+              className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
               style={{
                 position: "absolute",
                 right: "10px",
@@ -90,9 +88,8 @@ const Login = () => {
                 cursor: "pointer",
                 fontSize: "1.2rem",
               }}
-            >
-              {showPassword ? <BsEyeSlash /> : <BsEye />}
-            </span>
+              onClick={() => setShowPassword(!showPassword)}
+            ></i>
           </div>
         </div>
 
