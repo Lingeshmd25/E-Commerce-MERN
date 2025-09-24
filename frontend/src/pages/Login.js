@@ -2,14 +2,14 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/api";
 import { AuthContext } from "../context/AuthContext";
-import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { BsEye, BsEyeSlash } from "react-icons/bs"; // ✅ react-icons
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // 🔹 Added state
+  const [showPassword, setShowPassword] = useState(false); // toggle password
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,6 +18,7 @@ const Login = () => {
       const user = res.data.user;
       const token = res.data.token;
 
+      // Store locally
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
@@ -54,6 +55,7 @@ const Login = () => {
         <div className="text-center mb-3">
           <h2>Login</h2>
         </div>
+
         <div className="mb-3">
           <label className="form-label">Email</label>
           <input
@@ -65,6 +67,7 @@ const Login = () => {
             required
           />
         </div>
+
         <div className="mb-3">
           <label className="form-label">Password</label>
           <div style={{ position: "relative" }}>
@@ -76,8 +79,8 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <i
-              className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
+            {/* 🔹 React-icons eye toggle */}
+            <span
               onClick={() => setShowPassword(!showPassword)}
               style={{
                 position: "absolute",
@@ -85,10 +88,14 @@ const Login = () => {
                 top: "50%",
                 transform: "translateY(-50%)",
                 cursor: "pointer",
+                fontSize: "1.2rem",
               }}
-            ></i>
+            >
+              {showPassword ? <BsEyeSlash /> : <BsEye />}
+            </span>
           </div>
         </div>
+
         <div className="form-check mb-3">
           <input
             type="checkbox"
@@ -100,6 +107,7 @@ const Login = () => {
             Remember me
           </label>
         </div>
+
         <button type="submit" className="btn btn-primary w-100">
           Login
         </button>
