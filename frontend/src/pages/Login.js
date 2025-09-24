@@ -76,7 +76,7 @@ const Login = () => {
               required
             />
             <i
-              className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+              className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
               onClick={() => setShowPassword(!showPassword)}
               style={{
                 position: "absolute",
