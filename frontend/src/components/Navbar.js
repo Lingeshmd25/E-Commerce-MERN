@@ -1,13 +1,18 @@
-// src/components/Navbar.js
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext"; // Theme
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav
+      className={`navbar navbar-expand-lg ${
+        theme === "light" ? "navbar-light bg-light" : "navbar-dark bg-primary"
+      }`}
+    >
       <div className="container">
         {/* Brand */}
         <Link className="navbar-brand" to="/">E-Commerce</Link>
@@ -27,7 +32,19 @@ const Navbar = () => {
 
         {/* Navbar Links */}
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav ms-auto align-items-center">
+
+            {/* Theme Toggle */}
+            <li className="nav-item me-2">
+              <button
+                className={`btn btn-outline-${
+                  theme === "light" ? "dark" : "light"
+                }`}
+                onClick={toggleTheme}
+              >
+                {theme === "light" ? "Dark Mode" : "Light Mode"}
+              </button>
+            </li>
 
             {/* If not logged in */}
             {!user && (
@@ -45,10 +62,10 @@ const Navbar = () => {
             {user && (
               <>
                 {/* Admin Links */}
-                {user.role === "Admin" && (
+                {user.role?.toLowerCase() === "admin" && (
                   <>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/Dashboard">Dashboard</Link>
+                      <Link className="nav-link" to="/dashboard">Dashboard</Link>
                     </li>
                     <li className="nav-item">
                       <Link className="nav-link" to="/products">Products</Link>
