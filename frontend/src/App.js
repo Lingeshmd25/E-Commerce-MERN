@@ -4,6 +4,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ProductProvider } from "./context/ProductContext";
 import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const App = () => {
   return (
