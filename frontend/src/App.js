@@ -1,21 +1,22 @@
-// src/App.js
 import React from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { ProductProvider } from "./context/ProductContext";
+import { ThemeProvider } from "./context/ThemeContext"; // ✅ Add this
 import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
-import { ThemeProvider } from "./context/ThemeContext";
 
 const App = () => {
   return (
-    <AuthProvider>
-      <ProductProvider>
-        <Navbar />
-        <div className="container mt-4">
-          <AppRoutes />
-        </div>
-      </ProductProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <ProductProvider>
+          <Navbar />
+          <div className="container mt-4">
+            <AppRoutes />
+          </div>
+        </ProductProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 
