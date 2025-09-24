@@ -1,19 +1,16 @@
-/* Light mode (default Bootstrap) */
+/* Light mode */
 .theme-light {
-  --bs-body-bg: #ffffff;
-  --bs-body-color: #212529;
-  background-color: var(--bs-body-bg);
-  color: var(--bs-body-color);
+  background-color: #f8f9fa; /* Bootstrap body bg */
+  color: #212529;
 }
 
 /* Dark mode */
 .theme-dark {
-  --bs-body-bg: #121212;
-  --bs-body-color: #f8f9fa;
-  background-color: var(--bs-body-bg);
-  color: var(--bs-body-color);
+  background-color: #121212;
+  color: #f8f9fa;
 }
 
+/* Example for cards/forms/buttons */
 .theme-dark .card,
 .theme-dark .border {
   background-color: #1e1e1e;
