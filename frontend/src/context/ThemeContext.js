@@ -6,12 +6,13 @@ export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState("light"); // default
 
   useEffect(() => {
-    document.body.className = ""; // clear previous
+    // Remove old class
+    document.body.classList.remove("theme-light", "theme-dark");
     document.body.classList.add(`theme-${theme}`);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    setTheme(prev => (prev === "light" ? "dark" : "light"));
   };
 
   return (
