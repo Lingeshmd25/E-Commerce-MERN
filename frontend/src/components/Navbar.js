@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { ThemeContext } from "../context/ThemeContext"; // Theme
+import { ThemeContext } from "../context/ThemeContext";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -46,7 +46,7 @@ const Navbar = () => {
               </button>
             </li>
 
-            {/* If not logged in */}
+            {/* Auth Links */}
             {!user && (
               <>
                 <li className="nav-item">
@@ -58,10 +58,8 @@ const Navbar = () => {
               </>
             )}
 
-            {/* If logged in */}
             {user && (
               <>
-                {/* Admin Links */}
                 {user.role?.toLowerCase() === "admin" && (
                   <>
                     <li className="nav-item">
@@ -72,23 +70,20 @@ const Navbar = () => {
                     </li>
                   </>
                 )}
-
-                {/* Customer Links */}
                 {user.role?.toLowerCase() === "customer" && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/products">Products</Link>
                   </li>
                 )}
 
-                {/* Logout */}
-                <li className="nav-item">
-                  <span
-                    className="nav-link"
-                    style={{ cursor: "pointer" }}
+                {/* Logout always visible for logged-in users */}
+                <li className="nav-item ms-2">
+                  <button
+                    className={`btn btn-outline-${theme === "light" ? "dark" : "light"}`}
                     onClick={logout}
                   >
                     Logout
-                  </span>
+                  </button>
                 </li>
               </>
             )}
